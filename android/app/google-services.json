@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "720398504058",
+    "project_id": "muzik-93fc4",
+    "storage_bucket": "muzik-93fc4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720398504058:android:a41f481700a80df018ebc3",
+        "android_client_info": {
+          "package_name": "com.assassin.android_muzik"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720398504058-ca7518k26gu160knv0husqceh7p56drb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvJDUC9krTzQusQHGK88BxrkOnaVkZCI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720398504058-ca7518k26gu160knv0husqceh7p56drb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "720398504058-0bpirb92bcn591jfpeu4ub30pjlgqv1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.assassin.muzik"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720398504058:android:ee82830d806699c818ebc3",
+        "android_client_info": {
+          "package_name": "com.assassin.muzik"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720398504058-ca7518k26gu160knv0husqceh7p56drb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvJDUC9krTzQusQHGK88BxrkOnaVkZCI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720398504058-ca7518k26gu160knv0husqceh7p56drb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "720398504058-0bpirb92bcn591jfpeu4ub30pjlgqv1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.assassin.muzik"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
