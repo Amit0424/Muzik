@@ -1,19 +1,24 @@
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:android_muzik/screens/profile_screen/models/profile_model.dart';
 import 'package:flutter/material.dart';
 
 class ProfileProvider with ChangeNotifier {
-  Map _profileModelMap = {};
-  // late UserCredential _userCredential;
+  ProfileModel _profileModelMap = ProfileModel(
+    email: '',
+    phone: '',
+    profileUrl: '',
+    name: '',
+    dateOfBirth: '',
+    accountCreatedDate: '',
+    lastOnline: '',
+    latitude: 0.00,
+    longitude: 0.00,
+    fcmToken: '',
+    gender: Gender.male,
+  );
 
-  setProfileModelMap(Map profileModelMap) {
+  setProfileModelMap(ProfileModel profileModelMap) {
     _profileModelMap = profileModelMap;
   }
 
-  // setUserCredentials(UserCredential userCredential) {
-  //   _userCredential = userCredential;
-  //   notifyListeners();
-  // }
-
-  get profileModelMap => _profileModelMap;
-  // get userCredentials => _userCredential;
+  ProfileModel get profileModelMap => _profileModelMap;
 }

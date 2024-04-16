@@ -52,10 +52,10 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
     final listenersData =
         await fireStore.collection('listeners').doc(userId()).get();
     if (listenersData.exists) {
-      _nameController.text = profile['name'];
-      _phoneController.text = profile['phone'];
-      _dateController.text = profile['dateOfBirth'];
-      genderSelectionProvider.setGender(profile['gender']);
+      _nameController.text = profile.name;
+      _phoneController.text = profile.phone;
+      _dateController.text = profile.dateOfBirth;
+      genderSelectionProvider.setGender(profile.gender);
     }
   }
 
@@ -90,6 +90,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
             ? [
                 IconButton(
                     onPressed: () async {
+                      Navigator.pop(context);
                       if (loadingProvider.isGoogleLogin) {
                         await GoogleSignIn().signOut();
                       } else {
@@ -101,7 +102,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                       color: iconColor,
                     ))
               ]
-            : null,
+            : [],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -118,12 +119,9 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                     backgroundColor: Colors.transparent,
                     foregroundImage: profileImageUrl != ''
                         ? CachedNetworkImageProvider(profileImageUrl)
-                        : profileProvider.profileModelMap['profileUrl'] !=
-                                    null &&
-                                profileProvider.profileModelMap['profileUrl'] !=
-                                    ''
+                        : profileProvider.profileModelMap.profileUrl != ''
                             ? CachedNetworkImageProvider(
-                                profileProvider.profileModelMap['profileUrl'])
+                                profileProvider.profileModelMap.profileUrl)
                             : null,
                   ),
                   loadingProvider.isImageUploading
@@ -132,7 +130,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                           right: 0,
                           bottom: 0,
                           top: 0,
-                          child: LoadingWidget(color: matteBlackColor),
+                          child: LoadingWidget(color: redColor),
                         )
                       : const SizedBox.shrink(),
                 ],
@@ -141,7 +139,8 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                   onPressed: () async {
                     loadingProvider.setIsImageUploading(true);
                     profileImageUrl = await takeImage(ImageSource.gallery);
-
+                    profileProvider.profileModelMap.profileUrl =
+                        profileImageUrl;
                     loadingProvider.setIsImageUploading(false);
                   },
                   child: Text(
@@ -151,7 +150,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                     ),
                   )),
               TextFormField(
-                decoration: formInputDecoration('Name', 'Enter your full name'),
+                decoration: formInputDecoration('Name', 'Enter Your Full Name'),
                 cursorColor: textHeadingColor,
                 controller: _nameController,
                 style: TextStyle(color: textHeadingColor),
@@ -165,7 +164,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
               SizedBox(height: screenHeight(context) * 0.02),
               TextFormField(
                 decoration:
-                    formInputDecoration('Mobile', 'Enter your phone number')
+                    formInputDecoration('Mobile', 'Enter Your Phone Number')
                         .copyWith(counterText: ''),
                 cursorColor: textHeadingColor,
                 controller: _phoneController,
@@ -185,7 +184,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
               SizedBox(height: screenHeight(context) * 0.02),
               TextFormField(
                 decoration:
-                    formInputDecoration('Email', 'Enter your name').copyWith(
+                    formInputDecoration('Email', 'Enter Your Email').copyWith(
                   suffixIcon: Icon(
                     Icons.check,
                     color: redColor,

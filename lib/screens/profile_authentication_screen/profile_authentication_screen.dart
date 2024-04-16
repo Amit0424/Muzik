@@ -31,9 +31,9 @@ class ProfileAuthenticationScreen extends StatelessWidget {
             if (documentSnapshot.exists) {
               ProfileModel profileModel =
                   ProfileModel.fromDocument(documentSnapshot);
-              profileProvider.setProfileModelMap(profileModel.toMap());
+              profileProvider.setProfileModelMap(profileModel);
               genderSelectionProvider
-                  .setDBGender(profileProvider.profileModelMap['gender']);
+                  .setDBGender(profileProvider.profileModelMap.gender);
               return const SongsScreen();
             }
             return const UserDetailFormScreen(buttonName: 'Save');

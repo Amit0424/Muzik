@@ -27,8 +27,12 @@ Future<String> takeImage(ImageSource imageSource) async {
   String filePath =
       'listeners/${userId()}/profile_image/${DateTime.now().millisecondsSinceEpoch}';
   await firebaseStorage.ref(filePath).putFile(file);
+
   final String clickedImageUrl =
       await firebaseStorage.ref(filePath).getDownloadURL();
+  await fireStore.collection('listeners').doc(userId()).update({
+    'profileUrl': clickedImageUrl,
+  });
 
   return clickedImageUrl;
 }
