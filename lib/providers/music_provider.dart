@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -24,9 +22,14 @@ class MusicProvider extends ChangeNotifier {
       if (event.processingState == ProcessingState.completed) {
         _audioPlayer.seek(Duration.zero);
         _audioPlayer.pause();
+        songName = '';
+        artistName = '';
+        _songUri = '';
         notifyListeners();
       }
-      log('Player State: ${event.processingState}');
+    });
+    _audioPlayer.positionStream.listen((event) {
+      notifyListeners();
     });
   }
 
@@ -42,7 +45,7 @@ class MusicProvider extends ChangeNotifier {
     }
   }
 
-  String get getSongName => _songName;
-  String get getArtistName => _artistName;
+  String get songName => _songName;
+  String get artistName => _artistName;
   AudioPlayer get audioPlayer => _audioPlayer;
 }

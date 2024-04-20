@@ -14,5 +14,5 @@ class GenderSelectionProvider with ChangeNotifier {
     _selectedGender = gender;
   }
 
-  get selectedGender => _selectedGender;
+  Gender get selectedGender => _selectedGender;
 }

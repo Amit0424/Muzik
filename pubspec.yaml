@@ -43,6 +43,7 @@ dependencies:
   image_picker: ^1.0.8
   on_audio_query: ^2.9.0
   just_audio: ^0.9.37
+  marquee: ^2.2.3
 
 dev_dependencies:
   flutter_test:

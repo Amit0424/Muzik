@@ -1,3 +1,5 @@
+import 'package:android_muzik/providers/loading_provider.dart';
+import 'package:android_muzik/screens/profile_screen/providers/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +14,10 @@ class GenderSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final GenderSelectionProvider genderSelectionProvider =
         Provider.of<GenderSelectionProvider>(context);
+    final LoadingProvider loadingProvider =
+        Provider.of<LoadingProvider>(context);
+    final ProfileProvider profileProvider =
+        Provider.of<ProfileProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -21,6 +27,12 @@ class GenderSelectionWidget extends StatelessWidget {
           groupValue: genderSelectionProvider.selectedGender,
           onChanged: (Gender? value) {
             genderSelectionProvider.setGender(value!);
+            if (genderSelectionProvider.selectedGender !=
+                profileProvider.profileModelMap.gender) {
+              loadingProvider.setIsAllFieldCompleted(true);
+            } else {
+              loadingProvider.setIsAllFieldCompleted(false);
+            }
           },
         ),
         Text(
@@ -34,6 +46,12 @@ class GenderSelectionWidget extends StatelessWidget {
           groupValue: genderSelectionProvider.selectedGender,
           onChanged: (Gender? value) {
             genderSelectionProvider.setGender(value!);
+            if (genderSelectionProvider.selectedGender !=
+                profileProvider.profileModelMap.gender) {
+              loadingProvider.setIsAllFieldCompleted(true);
+            } else {
+              loadingProvider.setIsAllFieldCompleted(false);
+            }
           },
         ),
         Text(
@@ -47,6 +65,12 @@ class GenderSelectionWidget extends StatelessWidget {
           groupValue: genderSelectionProvider.selectedGender,
           onChanged: (Gender? value) {
             genderSelectionProvider.setGender(value!);
+            if (genderSelectionProvider.selectedGender !=
+                profileProvider.profileModelMap.gender) {
+              loadingProvider.setIsAllFieldCompleted(true);
+            } else {
+              loadingProvider.setIsAllFieldCompleted(false);
+            }
           },
         ),
         Text(

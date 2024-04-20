@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:android_muzik/screens/user_detail_form_screen/widgets/gender_selection_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +78,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
 
     return Scaffold(
       backgroundColor: blackColor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: blackColor,
         title: Text(
@@ -139,8 +138,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                   onPressed: () async {
                     loadingProvider.setIsImageUploading(true);
                     profileImageUrl = await takeImage(ImageSource.gallery);
-                    profileProvider.profileModelMap.profileUrl =
-                        profileImageUrl;
+                    _checkAllFieldCompleted();
                     loadingProvider.setIsImageUploading(false);
                   },
                   child: Text(
@@ -215,7 +213,8 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
               SizedBox(height: screenHeight(context) * 0.02),
               TextFormField(
                 controller: _dateController,
-                decoration: formInputDecoration('Birth Date', '').copyWith(
+                decoration:
+                    formInputDecoration('Birth Date', 'dd/MM/yyyy').copyWith(
                   suffixIcon: IconButton(
                     icon: Icon(
                       Icons.calendar_month,
@@ -226,7 +225,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                 ),
                 style: TextStyle(color: textHeadingColor),
                 cursorColor: textHeadingColor,
-                keyboardType: TextInputType.datetime,
+                keyboardType: TextInputType.none,
                 onTapOutside: (value) {
                   FocusScope.of(context).unfocus();
                 },
@@ -283,13 +282,34 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
   void _checkAllFieldCompleted() {
     final LoadingProvider loadingProvider =
         Provider.of<LoadingProvider>(context, listen: false);
-    log('name: ${_nameController.text}, phone: ${_phoneController.text}, date: ${_dateController.text}');
-    if (_nameController.text.isNotEmpty &&
-        _phoneController.text.length == 10 &&
-        _dateController.text.length == 10) {
-      loadingProvider.setIsAllFieldCompleted(true);
-    } else {
-      loadingProvider.setIsAllFieldCompleted(false);
+    final ProfileProvider profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    if (widget.buttonName == 'Save') {
+      if (_nameController.text.isNotEmpty &&
+          _phoneController.text.length == 10 &&
+          _dateController.text.length == 10) {
+        loadingProvider.setIsAllFieldCompleted(true);
+      } else {
+        loadingProvider.setIsAllFieldCompleted(false);
+      }
+    }
+    if (widget.buttonName == 'Update') {
+      final GenderSelectionProvider genderSelectionProvider =
+          Provider.of<GenderSelectionProvider>(context, listen: false);
+      Gender gender = genderSelectionProvider.selectedGender;
+      if ((_nameController.text.isNotEmpty &&
+                  _phoneController.text.length == 10 &&
+                  _dateController.text.length == 10) &&
+              (profileProvider.profileModelMap.name !=
+                      _nameController.text.trim() ||
+                  profileProvider.profileModelMap.phone !=
+                      _phoneController.text.trim() ||
+                  profileProvider.profileModelMap.gender != gender) ||
+          profileProvider.profileModelMap.profileUrl != profileImageUrl) {
+        loadingProvider.setIsAllFieldCompleted(true);
+      } else {
+        loadingProvider.setIsAllFieldCompleted(false);
+      }
     }
   }
 
@@ -300,6 +320,8 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
         Provider.of<LoadingProvider>(context, listen: false);
     final LocationProvider locationProvider =
         Provider.of<LocationProvider>(context, listen: false);
+    final ProfileProvider profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
     final gender = genderSelectionProvider.selectedGender;
     loadingProvider.setIsDataUploadingToDB(true);
     if (loadingProvider.isAllFieldCompleted) {
@@ -309,8 +331,10 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
 
       if (listenersData.exists) {
         await fireStore.collection('listeners').doc(userId()).update({
-          'profileUrl': profileImageUrl,
-          'name': _nameController.text,
+          'profileUrl': profileImageUrl == ''
+              ? profileProvider.profileModelMap.profileUrl
+              : profileImageUrl,
+          'name': _nameController.text.trim(),
           'phone': _phoneController.text,
           'email': _emailController.text,
           'gender': gender == Gender.other
@@ -318,8 +342,16 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
               : gender == Gender.female
                   ? 'female'
                   : 'male',
-          'dateOfBirth': _dateController.text,
+          'dateOfBirth': _dateController.text.trim(),
         });
+        profileProvider.profileModelMap.profileUrl = profileImageUrl == ''
+            ? profileProvider.profileModelMap.profileUrl
+            : profileImageUrl;
+        profileProvider.profileModelMap.name = _nameController.text.trim();
+        profileProvider.profileModelMap.phone = _phoneController.text;
+        profileProvider.profileModelMap.dateOfBirth = _dateController.text;
+        profileProvider.profileModelMap.gender =
+            genderSelectionProvider.selectedGender;
       } else {
         loadingProvider.setIsGoogleLogin(false);
         await fireStore.collection('listeners').doc(userId()).set({
@@ -344,12 +376,13 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        'Field is empty',
+        'Field is empty or not changed',
         style: TextStyle(
           color: textHeadingColor,
         ),
       )));
     }
+    loadingProvider.setIsAllFieldCompleted(false);
     loadingProvider.setIsDataUploadingToDB(false);
   }
 }

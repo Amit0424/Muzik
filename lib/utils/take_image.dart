@@ -30,9 +30,6 @@ Future<String> takeImage(ImageSource imageSource) async {
 
   final String clickedImageUrl =
       await firebaseStorage.ref(filePath).getDownloadURL();
-  await fireStore.collection('listeners').doc(userId()).update({
-    'profileUrl': clickedImageUrl,
-  });
 
   return clickedImageUrl;
 }

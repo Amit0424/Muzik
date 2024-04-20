@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../constants/styling.dart';
 import '../../widgets/loading_widget.dart';
@@ -17,21 +14,6 @@ class DownloadedSongsScreen extends StatefulWidget {
 
 class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
   final OnAudioQuery _audioQuery = OnAudioQuery();
-
-  @override
-  void initState() {
-    super.initState();
-    requestPermission();
-  }
-
-  void requestPermission() async {
-    log('getting storage permission');
-    final storageStatusRequest = await Permission.mediaLibrary.request();
-
-    if (storageStatusRequest.isDenied) {
-      log('Permission Granted');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

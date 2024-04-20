@@ -39,6 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final status = await Permission.storage.request();
     log('is Granted:${status.isGranted}');
     locationProvider.setLocation(location);
+    await Permission.mediaLibrary.request();
     log('latitude: ${location['latitude'].toString()}');
   }
 
