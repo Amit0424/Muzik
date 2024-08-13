@@ -57,8 +57,6 @@ ButtonStyle registerButtonStyle(
 
 TextStyle appBarTitleStyle(BuildContext context) => TextStyle(
       color: redColor,
-      fontFamily: 'Creepster',
       fontWeight: FontWeight.w500,
-      fontSize: screenWidth(context) * 0.06,
-      letterSpacing: 4,
+      fontSize: screenWidth(context) * 0.04,
     );

@@ -21,8 +21,8 @@ class ProfileModel {
   String phone;
   String profileUrl;
   String dateOfBirth;
-  String accountCreatedDate;
-  String lastOnline;
+  DateTime accountCreatedDate;
+  DateTime lastOnline;
   double latitude;
   double longitude;
   String fcmToken;
@@ -66,8 +66,8 @@ class ProfileModel {
     final phone = map['phone'] as String?;
     final profileUrl = map['profileUrl'] as String?;
     final dateOfBirth = map['dateOfBirth'];
-    final accountCreatedDate = map['accountCreatedDate'];
-    final lastOnline = map['lastOnline'];
+    final accountCreatedDate = map['accountCreatedDate'].toDate();
+    final lastOnline = map['lastOnline'].toDate();
     final latitude = map['latitude'];
     final longitude = map['longitude'];
     final fcmToken = map['fcmToken'] as String;

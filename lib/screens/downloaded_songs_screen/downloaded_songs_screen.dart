@@ -1,5 +1,6 @@
+import 'package:android_muzik/providers/music_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/styling.dart';
 import '../../widgets/loading_widget.dart';
@@ -13,14 +14,13 @@ class DownloadedSongsScreen extends StatefulWidget {
 }
 
 class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
-  final OnAudioQuery _audioQuery = OnAudioQuery();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        backgroundColor: blackColor,
+        backgroundColor: Colors.black,
+        surfaceTintColor: Colors.black,
         title: Text(
           'Downloaded',
           style: appBarTitleStyle(context),
@@ -28,104 +28,92 @@ class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: FutureBuilder<List<SongModel>>(
-          future: _audioQuery.querySongs(
-            sortType: SongSortType.DISPLAY_NAME,
-            orderType: OrderType.ASC_OR_SMALLER,
-            ignoreCase: true,
-            uriType: UriType.EXTERNAL,
-          ),
-          builder: (context, songs) {
-            if (songs.hasError) {
-              return Text(
-                songs.error.toString(),
-                style: TextStyle(color: textHeadingColor),
-              );
-            }
-            if (songs.hasData) {
-              return ListView.builder(
-                itemCount: songs.data!.length,
-                itemBuilder: (context, index) {
-                  final songName = songs.data![index].displayNameWOExt;
-                  final artistName = songs.data![index].artist.toString();
-                  if (songs.data!.isEmpty) {
-                    return Text(
-                      'No songs found',
-                      style: TextStyle(
-                        color: textHeadingColor,
-                        fontSize: 16,
-                      ),
-                    );
+        child:
+            Consumer<MusicProvider>(builder: (context, musicProvider, child) {
+          final songModelList = musicProvider.songModelList;
+          return ListView.separated(
+            itemCount: songModelList.length,
+            itemBuilder: (context, index) {
+              final song = songModelList[index];
+              final songName = song.title.toString();
+              final artistName = song.artist.toString();
+              if (songModelList.isEmpty) {
+                return LoadingWidget(color: redColor);
+              }
+
+              return GestureDetector(
+                onTap: () {
+                  if (musicProvider.audioPlayer.currentIndex != index) {
+                    musicProvider.setAudioSourceSong(index);
+                    musicProvider.audioPlayer.play();
                   }
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return NowPlaying(
-                          songModel: songs.data![index],
-                        );
-                      }));
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(
-                          vertical: screenHeight(context) * 0.01),
-                      padding: EdgeInsets.symmetric(
-                          vertical: screenHeight(context) * 0.01,
-                          horizontal: screenWidth(context) * 0.02),
-                      decoration: BoxDecoration(
-                        color: textHeadingColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return NowPlaying(
+                      songModel: songModelList,
+                      index: index,
+                    );
+                  }));
+                },
+                child: SizedBox(
+                  width: screenWidth(context),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        foregroundColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                        radius: screenWidth(context) * 0.05,
+                        backgroundImage: const AssetImage(
+                          'assets/images/pngs/anime_image_1.png',
+                        ),
                       ),
-                      child: Row(
+                      SizedBox(
+                        width: screenWidth(context) * 0.05,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            foregroundColor: Colors.transparent,
-                            backgroundColor: Colors.transparent,
-                            radius: screenWidth(context) * 0.05,
-                            backgroundImage: const AssetImage(
-                              'assets/images/pngs/anime_image_1.png',
+                          SizedBox(
+                            width: screenWidth(context) * 0.6,
+                            child: Text(
+                              songName,
+                              style: TextStyle(
+                                color: textHeadingColor,
+                                fontSize: screenWidth(context) * 0.04,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          SizedBox(
-                            width: screenWidth(context) * 0.05,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: screenWidth(context) * 0.75,
-                                child: Text(
-                                  songName,
-                                  style: TextStyle(
-                                    color: textHeadingColor,
-                                    fontSize: screenWidth(context) * 0.04,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Text(
-                                artistName == '<unknown>'
-                                    ? 'Unknown Artist'
-                                    : artistName ?? 'Unknown Artist',
-                                style: TextStyle(
-                                  color: textSubHeadingColor,
-                                  fontSize: screenWidth(context) * 0.03,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            artistName == '<unknown>'
+                                ? 'Unknown Artist'
+                                : artistName,
+                            style: TextStyle(
+                              color: textSubHeadingColor,
+                              fontSize: screenWidth(context) * 0.03,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  );
-                },
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          // musicProvider.deleteSong(song);
+                        },
+                        icon: Icon(
+                          Icons.more_vert_rounded,
+                          color: redColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               );
-            } else {
-              return LoadingWidget(color: redColor);
-            }
-          },
-        ),
+            },
+            separatorBuilder: (context, index) => SizedBox(
+              height: screenHeight(context) * 0.02,
+            ),
+          );
+        }),
       ),
     );
   }

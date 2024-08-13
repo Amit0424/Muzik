@@ -374,9 +374,9 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                   ? 'female'
                   : 'male',
           'dateOfBirth': _dateController.text,
-          'accountCreatedDate': DateFormat('dd/MM/yyyy').format(DateTime.now()),
+          'accountCreatedDate': DateTime.now(),
           'fcmToken': '',
-          'lastOnline': DateFormat('dd/MM/yyyy').format(DateTime.now()),
+          'lastOnline': DateTime.now(),
           'latitude': locationProvider.location['latitude'],
           'longitude': locationProvider.location['longitude'],
         });

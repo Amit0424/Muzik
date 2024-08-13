@@ -1,8 +1,6 @@
 import 'package:android_muzik/screens/songs_screen/utils/bottom_navigation_bar_list.dart';
 import 'package:android_muzik/screens/songs_screen/utils/dash_board_screen_list.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:marquee/marquee.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +36,7 @@ class _SongsScreenState extends State<SongsScreen> {
     locationProvider.setLocation(await getLocation(context));
     await Permission.mediaLibrary.request();
     await fireStore.collection('listeners').doc(userId()).update({
-      'lastOnline': DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      'lastOnline': DateTime.now(),
       'latitude': locationProvider.location['latitude'],
       'longitude': locationProvider.location['longitude'],
     });
@@ -58,99 +56,101 @@ class _SongsScreenState extends State<SongsScreen> {
       backgroundColor: blackColor,
       body: Stack(children: [
         dashBoardList()[currentIndex],
-        if (musicProvider.audioPlayer.playing || musicProvider.songName != '')
+        if (musicProvider.audioPlayer.playing &&
+            musicProvider.audioPlayer.currentIndex != null)
           Positioned(
-            bottom: 5,
-            left: 5,
-            right: 5,
-            child: Container(
-              height: screenHeight(context) * 0.1,
-              width: screenWidth(context),
-              padding: EdgeInsets.symmetric(
-                  vertical: screenHeight(context) * 0.01,
-                  horizontal: screenWidth(context) * 0.02),
-              decoration: BoxDecoration(
-                color: matteBlackColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: Marquee(
-                      text: musicProvider.songName,
-                      style: TextStyle(
-                        color: yellowColor,
-                        fontSize: screenHeight(context) * 0.02,
-                      ),
-                      scrollAxis: Axis.horizontal,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      blankSpace: 20.0,
-                      velocity: 50.0,
-                      fadingEdgeStartFraction: 0.3,
-                      fadingEdgeEndFraction: 0.3,
-                      pauseAfterRound: const Duration(seconds: 1),
-                      startPadding: 10.0,
-                      accelerationDuration: const Duration(seconds: 1),
-                      accelerationCurve: Curves.linear,
-                      decelerationDuration: const Duration(milliseconds: 500),
-                      decelerationCurve: Curves.easeOut,
+                  Container(
+                    height: screenHeight(context) * 0.11,
+                    width: screenWidth(context),
+                    margin: EdgeInsets.symmetric(
+                      vertical: screenHeight(context) * 0.01,
+                      horizontal: screenWidth(context) * 0.02,
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            musicProvider.audioPlayer
-                                .seek(const Duration(seconds: -10));
-                          });
-                        },
-                        icon: Icon(
-                          Icons.skip_previous,
-                          color: textHeadingColor,
+                    padding: EdgeInsets.symmetric(
+                        vertical: screenHeight(context) * 0.01,
+                        horizontal: screenWidth(context) * 0.02),
+                    decoration: BoxDecoration(
+                      color: matteBlackColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          musicProvider.songName,
+                          style: TextStyle(
+                            color: textHeadingColor,
+                            fontSize: screenWidth(context) * 0.04,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: screenWidth(context) * 0.05,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            if (musicProvider.audioPlayer.playing) {
-                              musicProvider.audioPlayer.pause();
-                            } else {
-                              musicProvider.audioPlayer.play();
-                            }
-                          });
-                        },
-                        icon: musicProvider.audioPlayer.playing
-                            ? Icon(
-                                Icons.pause,
-                                color: textHeadingColor,
-                              )
-                            : Icon(
-                                Icons.play_arrow,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                musicProvider.seekToPreviousSong();
+                              },
+                              icon: Icon(
+                                Icons.skip_previous,
                                 color: textHeadingColor,
                               ),
-                      ),
-                      SizedBox(
-                        width: screenWidth(context) * 0.05,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            musicProvider.audioPlayer
-                                .seek(const Duration(seconds: 10));
-                          });
-                        },
-                        icon: Icon(
-                          Icons.skip_next,
-                          color: textHeadingColor,
+                            ),
+                            SizedBox(
+                              width: screenWidth(context) * 0.05,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                if (musicProvider.audioPlayer.playing) {
+                                  musicProvider.playPause();
+                                } else {
+                                  musicProvider.audioPlayer.play();
+                                }
+                              },
+                              icon: musicProvider.audioPlayer.playing
+                                  ? Icon(
+                                      Icons.pause,
+                                      color: textHeadingColor,
+                                    )
+                                  : Icon(
+                                      Icons.play_arrow,
+                                      color: textHeadingColor,
+                                    ),
+                            ),
+                            SizedBox(
+                              width: screenWidth(context) * 0.05,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                musicProvider.seekToNextSong();
+                              },
+                              icon: Icon(
+                                Icons.skip_next,
+                                color: textHeadingColor,
+                              ),
+                            ),
+                          ],
                         ),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        musicProvider.audioPlayer.stop();
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: yellowColor,
+                        size: screenWidth(context) * 0.05,
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),

@@ -2,13 +2,14 @@ import 'package:android_muzik/constants/styling.dart';
 import 'package:android_muzik/providers/music_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 class NowPlaying extends StatefulWidget {
-  const NowPlaying({super.key, required this.songModel});
-  final SongModel songModel;
+  const NowPlaying({super.key, required this.songModel, required this.index});
+
+  final List<SongModel> songModel;
+  final int index;
 
   @override
   State<NowPlaying> createState() => _NowPlayingState();
@@ -17,7 +18,8 @@ class NowPlaying extends StatefulWidget {
 class _NowPlayingState extends State<NowPlaying>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
+
+  // late Animation<Offset> _offsetAnimation;
 
   @override
   void initState() {
@@ -26,21 +28,6 @@ class _NowPlayingState extends State<NowPlaying>
       duration: const Duration(seconds: 5),
       vsync: this,
     )..repeat(reverse: false);
-
-    _offsetAnimation = Tween<Offset>(
-      begin: Offset.zero,
-      end: const Offset(-1.0, 0.0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-    final MusicProvider musicProvider =
-        Provider.of<MusicProvider>(context, listen: false);
-    musicProvider.songName = widget.songModel.displayNameWOExt;
-    musicProvider.artistName = widget.songModel.artist == '<unknown>'
-        ? 'Unknown Artist'
-        : widget.songModel.artist ?? 'Unknown Artist';
-    musicProvider.setSongForPlaying(widget.songModel.uri);
   }
 
   @override
@@ -51,7 +38,6 @@ class _NowPlayingState extends State<NowPlaying>
 
   @override
   Widget build(BuildContext context) {
-    final MusicProvider musicProvider = Provider.of<MusicProvider>(context);
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
@@ -66,109 +52,95 @@ class _NowPlayingState extends State<NowPlaying>
           icon: Icon(
             Icons.arrow_back_ios_new,
             color: textHeadingColor,
+            size: 20,
           ),
         ),
+        centerTitle: true,
         title: Text(
-          'Downloaded',
+          'Now Playing',
           style: appBarTitleStyle(context),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth(context) * 0.05,
-        ),
-        child: Center(
+      body: Consumer<MusicProvider>(builder: (context, musicProvider, child) {
+        musicProvider.songName =
+            widget.songModel[musicProvider.audioPlayer.currentIndex!].title;
+        musicProvider.artistName =
+            widget.songModel[musicProvider.audioPlayer.currentIndex!].artist!;
+
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth(context) * 0.03,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                foregroundColor: Colors.transparent,
-                backgroundColor: Colors.transparent,
-                radius: screenWidth(context) * 0.3,
-                foregroundImage:
-                    const AssetImage('assets/images/pngs/anime_image_1.png'),
+              SizedBox(
+                height: screenHeight(context) * 0.02,
+              ),
+              Container(
+                height: screenHeight(context) * 0.4,
+                width: screenWidth(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/pngs/boy_profile.png'),
+                  ),
+                ),
               ),
               SizedBox(
-                height: screenHeight(context) * 0.05,
+                height: screenHeight(context) * 0.01,
               ),
-              SizedBox(
-                height: screenHeight(context) * 0.05,
-                width: screenWidth(context) * 0.9,
-                child: Marquee(
-                  text: widget.songModel.displayNameWOExt,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  musicProvider.songName,
                   style: TextStyle(
                     color: textHeadingColor,
-                    fontSize: screenHeight(context) * 0.02,
+                    fontSize: screenHeight(context) * 0.025,
+                    fontWeight: FontWeight.w500,
                   ),
-                  scrollAxis: Axis.horizontal,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  blankSpace: 20.0,
-                  velocity: 50.0,
-                  fadingEdgeStartFraction: 0.3,
-                  fadingEdgeEndFraction: 0.3,
-                  pauseAfterRound: const Duration(seconds: 1),
-                  startPadding: 10.0,
-                  accelerationDuration: const Duration(seconds: 1),
-                  accelerationCurve: Curves.linear,
-                  decelerationDuration: const Duration(milliseconds: 500),
-                  decelerationCurve: Curves.easeOut,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  musicProvider.artistName,
+                  style: TextStyle(
+                    color: textSubHeadingColor,
+                    fontSize: screenHeight(context) * 0.015,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               SizedBox(
                 height: screenHeight(context) * 0.02,
               ),
-              Text(
-                widget.songModel.artist == '<unknown>'
-                    ? 'Unknown Artist'
-                    : widget.songModel.artist ?? 'Unknown Artist',
-                style: TextStyle(
-                  color: textSubHeadingColor,
-                  fontSize: screenHeight(context) * 0.02,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: screenHeight(context) * 0.02,
+              Slider(
+                activeColor: redColor.withOpacity(0.9),
+                inactiveColor: textSubHeadingColor,
+                allowedInteraction: SliderInteraction.tapAndSlide,
+                thumbColor: redColor,
+                value: musicProvider.audioPlayer.position.inSeconds.toDouble(),
+                onChanged: (value) {
+                  musicProvider.seekSong(value);
+                },
+                min: 0,
+                max: musicProvider.audioPlayer.duration?.inSeconds.toDouble() ??
+                    0.00,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: screenWidth(context) * 0.15,
-                    child: Center(
-                      child: Text(
-                        musicProvider.audioPlayer.position.inMinutes < 1
-                            ? '00:${musicProvider.audioPlayer.position.inSeconds < 10 ? '0' : ''}${musicProvider.audioPlayer.position.inSeconds}'
-                            : '${musicProvider.audioPlayer.position.inMinutes < 10 ? '0' : ''}${musicProvider.audioPlayer.position.inMinutes}:${musicProvider.audioPlayer.position.inSeconds.remainder(60) < 10 ? '0' : ''}${musicProvider.audioPlayer.position.inSeconds.remainder(60)}',
-                        style: TextStyle(
-                          color: textSubHeadingColor,
-                          fontSize: screenHeight(context) * 0.02,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Slider(
-                      activeColor: redColor.withOpacity(0.9),
-                      inactiveColor: textSubHeadingColor,
-                      allowedInteraction: SliderInteraction.tapAndSlide,
-                      thumbColor: redColor,
-                      value: musicProvider.audioPlayer.position.inSeconds
-                          .toDouble(),
-                      onChanged: (value) {
-                        setState(() {
-                          musicProvider.audioPlayer.seek(
-                              Duration(milliseconds: (value * 1000).toInt()));
-                        });
-                      },
-                      min: 0,
-                      max: musicProvider.audioPlayer.duration?.inSeconds
-                              .toDouble() ??
-                          0.00,
+                  Text(
+                    formatDuration(musicProvider.audioPlayer.position),
+                    style: TextStyle(
+                      color: textSubHeadingColor,
+                      fontSize: screenHeight(context) * 0.02,
                     ),
                   ),
                   Text(
-                    '${musicProvider.audioPlayer.duration?.inMinutes ?? 0}:${(musicProvider.audioPlayer.duration?.inSeconds.remainder(60) ?? 0) < 10 ? '0${musicProvider.audioPlayer.duration?.inSeconds.remainder(60) ?? 0}' : musicProvider.audioPlayer.duration!.inSeconds.remainder(60)}',
+                    formatDuration(musicProvider.audioPlayer.duration ??
+                        const Duration(seconds: 0)),
                     style: TextStyle(
                       color: textSubHeadingColor,
                       fontSize: screenHeight(context) * 0.02,
@@ -182,14 +154,35 @@ class _NowPlayingState extends State<NowPlaying>
                 children: [
                   IconButton(
                     onPressed: () {
-                      setState(() {
-                        musicProvider.audioPlayer
-                            .seek(const Duration(seconds: -10));
-                      });
+                      musicProvider.seekToPreviousSong();
                     },
                     icon: Icon(
                       Icons.skip_previous,
-                      color: textHeadingColor,
+                      color: Colors.white,
+                      size: screenHeight(context) * 0.045,
+                    ),
+                  ),
+                  SizedBox(
+                    width: screenWidth(context) * 0.05,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      musicProvider.playPause();
+                    },
+                    child: Container(
+                      height: screenHeight(context) * 0.08,
+                      width: screenHeight(context) * 0.08,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: redColor,
+                      ),
+                      child: Icon(
+                        musicProvider.audioPlayer.playing
+                            ? Icons.pause
+                            : Icons.play_arrow,
+                        color: Colors.white,
+                        size: screenHeight(context) * 0.045,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -197,37 +190,12 @@ class _NowPlayingState extends State<NowPlaying>
                   ),
                   IconButton(
                     onPressed: () {
-                      setState(() {
-                        if (musicProvider.audioPlayer.playing) {
-                          musicProvider.audioPlayer.pause();
-                        } else {
-                          musicProvider.audioPlayer.play();
-                        }
-                      });
-                    },
-                    icon: musicProvider.audioPlayer.playing
-                        ? Icon(
-                            Icons.pause,
-                            color: textHeadingColor,
-                          )
-                        : Icon(
-                            Icons.play_arrow,
-                            color: textHeadingColor,
-                          ),
-                  ),
-                  SizedBox(
-                    width: screenWidth(context) * 0.05,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        musicProvider.audioPlayer
-                            .seek(const Duration(seconds: 10));
-                      });
+                      musicProvider.seekToNextSong();
                     },
                     icon: Icon(
                       Icons.skip_next,
-                      color: textHeadingColor,
+                      color: Colors.white,
+                      size: screenHeight(context) * 0.045,
                     ),
                   ),
                 ],
@@ -237,8 +205,14 @@ class _NowPlayingState extends State<NowPlaying>
               ),
             ],
           ),
-        ),
-      ),
+        );
+      }),
     );
+  }
+
+  String formatDuration(Duration duration) {
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
   }
 }
