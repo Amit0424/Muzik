@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:android_muzik/screens/welcome_screen/utils/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/styling.dart';
@@ -36,10 +35,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final LocationProvider locationProvider =
         Provider.of<LocationProvider>(context, listen: false);
     location = await getLocation(context);
-    final status = await Permission.storage.request();
-    log('is Granted:${status.isGranted}');
     locationProvider.setLocation(location);
-    await Permission.mediaLibrary.request();
     log('latitude: ${location['latitude'].toString()}');
   }
 

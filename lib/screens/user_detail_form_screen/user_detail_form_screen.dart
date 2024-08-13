@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/styling.dart';
@@ -20,6 +21,7 @@ import '../profile_screen/providers/profile_provider.dart';
 
 class UserDetailFormScreen extends StatefulWidget {
   const UserDetailFormScreen({super.key, required this.buttonName});
+
   final String buttonName;
 
   @override
@@ -39,6 +41,13 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
     super.initState();
     storeData();
     _emailController.text = getCurrentUserEmail();
+    _getStoragePermission();
+  }
+
+  void _getStoragePermission() async {
+    if (await Permission.storage.isDenied) {
+      await Permission.photos.request();
+    }
   }
 
   storeData() async {

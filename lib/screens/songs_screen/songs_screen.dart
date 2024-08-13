@@ -15,6 +15,7 @@ import '../../utils/get_user_details.dart';
 
 class SongsScreen extends StatefulWidget {
   const SongsScreen({super.key});
+
   static String routeName = '/songs_screen';
 
   @override
@@ -27,6 +28,7 @@ class _SongsScreenState extends State<SongsScreen> {
   @override
   void initState() {
     super.initState();
+    _getMediaPermission();
     sendLiveDataToDB();
   }
 
@@ -40,6 +42,12 @@ class _SongsScreenState extends State<SongsScreen> {
       'latitude': locationProvider.location['latitude'],
       'longitude': locationProvider.location['longitude'],
     });
+  }
+
+  void _getMediaPermission() async {
+    if (await Permission.audio.isDenied) {
+      await Permission.audio.request();
+    }
   }
 
   @override
