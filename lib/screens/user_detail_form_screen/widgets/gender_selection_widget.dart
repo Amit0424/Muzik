@@ -22,7 +22,7 @@ class GenderSelectionWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Radio<Gender>(
-          activeColor: redColor,
+          activeColor: yellowColor,
           value: Gender.male,
           groupValue: genderSelectionProvider.selectedGender,
           onChanged: (Gender? value) {
@@ -41,7 +41,7 @@ class GenderSelectionWidget extends StatelessWidget {
         ),
         SizedBox(width: screenWidth(context) * 0.06),
         Radio<Gender>(
-          activeColor: redColor,
+          activeColor: yellowColor,
           value: Gender.female,
           groupValue: genderSelectionProvider.selectedGender,
           onChanged: (Gender? value) {
@@ -60,7 +60,7 @@ class GenderSelectionWidget extends StatelessWidget {
         ),
         SizedBox(width: screenWidth(context) * 0.06),
         Radio<Gender>(
-          activeColor: redColor,
+          activeColor: yellowColor,
           value: Gender.other,
           groupValue: genderSelectionProvider.selectedGender,
           onChanged: (Gender? value) {

@@ -40,7 +40,7 @@ class ProfileAuthenticationScreen extends StatelessWidget {
           }
           return Scaffold(
             backgroundColor: blackColor,
-            body: Center(child: LoadingWidget(color: redColor)),
+            body: Center(child: LoadingWidget(color: yellowColor)),
           );
         });
   }

@@ -138,7 +138,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                           right: 0,
                           bottom: 0,
                           top: 0,
-                          child: LoadingWidget(color: redColor),
+                          child: LoadingWidget(color: yellowColor),
                         )
                       : const SizedBox.shrink(),
                 ],
@@ -194,7 +194,7 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                     formInputDecoration('Email', 'Enter Your Email').copyWith(
                   suffixIcon: Icon(
                     Icons.check,
-                    color: redColor,
+                    color: yellowColor,
                   ),
                 ),
                 cursorColor: textHeadingColor,
@@ -249,9 +249,9 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
                 style: registerButtonStyle(
                   context,
                   loadingProvider.isAllFieldCompleted
-                      ? redColor
+                      ? yellowColor
                       : Colors.transparent,
-                  redColor,
+                  yellowColor,
                 ),
                 child: loadingProvider.isDataUploadingToDB
                     ? LoadingWidget(color: blackColor)

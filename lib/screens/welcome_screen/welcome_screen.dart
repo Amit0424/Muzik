@@ -117,8 +117,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ElevatedButton(
                         style: registerButtonStyle(
                           context,
-                          redColor,
-                          redColor,
+                          yellowColor,
+                          yellowColor,
                         ),
                         onPressed: _googleSignIn,
                         child: Text(
@@ -135,13 +135,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         style: registerButtonStyle(
                           context,
                           Colors.transparent,
-                          redColor,
+                          yellowColor,
                         ),
                         onPressed: _emailSignUp,
                         child: Text(
                           'Continue with Email',
                           style: TextStyle(
-                            color: redColor,
+                            color: yellowColor,
                             fontSize: screenWidth(context) * 0.04,
                           ),
                         ),

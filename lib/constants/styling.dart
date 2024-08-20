@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-Color redColor = const Color(0xFFFF2E00);
-Color darkYellowColor = const Color(0xFFE69A15);
 Color yellowColor = const Color(0xFFF8A245);
+Color darkYellowColor = const Color(0xFFE69A15);
+Color redColor = const Color(0xFFFF2E00);
 Color iconColor = const Color(0xFF9DB2CE);
 Color textHeadingColor = const Color(0xFFCBC8C8);
 Color textSubHeadingColor = const Color(0xFF847D7D);
@@ -24,7 +24,7 @@ InputDecoration formInputDecoration(String labelText, String hintText) =>
         borderRadius: BorderRadius.circular(20),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: redColor),
+        borderSide: BorderSide(color: yellowColor),
         borderRadius: BorderRadius.circular(20),
       ),
       hintText: hintText,
@@ -56,7 +56,7 @@ ButtonStyle registerButtonStyle(
     );
 
 TextStyle appBarTitleStyle(BuildContext context) => TextStyle(
-      color: redColor,
+      color: yellowColor,
       fontWeight: FontWeight.w500,
       fontSize: screenWidth(context) * 0.04,
     );

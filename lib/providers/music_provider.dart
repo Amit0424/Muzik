@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:android_muzik/utils/tracks.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../models/spotify_tracks_model.dart';
 
 class MusicProvider extends ChangeNotifier {
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -12,17 +15,22 @@ class MusicProvider extends ChangeNotifier {
       ConcatenatingAudioSource(children: []);
   String _songName = '';
   String _artistName = '';
-
-  // String _songUri = '';
   List<AudioSource> playlist = [];
+  BrowseStart? browseStart;
 
   MusicProvider() {
     getDownloadedSongs();
   }
 
+  Future<String> loadData() async {
+    browseStart = parseBrowseStart(spotifyTracks);
+    notifyListeners();
+    return "success";
+  }
+
   Future<void> getDownloadedSongs() async {
     songModelList = await _audioQuery.querySongs(
-      sortType: SongSortType.DISPLAY_NAME,
+      sortType: SongSortType.TITLE,
       orderType: OrderType.ASC_OR_SMALLER,
       ignoreCase: true,
       uriType: UriType.EXTERNAL,
@@ -48,16 +56,22 @@ class MusicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void playPause() {
+    if (_audioPlayer.playing) {
+      _audioPlayer.pause();
+    } else {
+      _audioPlayer.play();
+    }
+    notifyListeners();
+  }
+
   void setAudioSourceSong(int index) {
-    log(songPlaylist.length.toString());
     if (songPlaylist.length == 0) {
       log('playlist is empty');
       songPlaylist = ConcatenatingAudioSource(
         children: playlist,
       );
     }
-    log(songPlaylist.length.toString());
-    log(playlist.length.toString());
     _audioPlayer.setAudioSource(songPlaylist, initialIndex: index);
     listener();
   }
@@ -102,13 +116,4 @@ class MusicProvider extends ChangeNotifier {
   String get artistName => _artistName;
 
   AudioPlayer get audioPlayer => _audioPlayer;
-
-  void playPause() {
-    if (_audioPlayer.playing) {
-      _audioPlayer.pause();
-    } else {
-      _audioPlayer.play();
-    }
-    notifyListeners();
-  }
 }

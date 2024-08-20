@@ -39,10 +39,10 @@ class _NowPlayingState extends State<NowPlaying>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: blackColor,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black,
         ),
         backgroundColor: blackColor,
         leading: IconButton(
@@ -82,12 +82,13 @@ class _NowPlayingState extends State<NowPlaying>
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   image: const DecorationImage(
-                    image: AssetImage('assets/images/pngs/boy_profile.png'),
+                    image: AssetImage('assets/images/jpgs/music_symbol.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
               SizedBox(
-                height: screenHeight(context) * 0.01,
+                height: screenHeight(context) * 0.02,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -99,7 +100,12 @@ class _NowPlayingState extends State<NowPlaying>
                     fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.left,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+              ),
+              SizedBox(
+                height: screenHeight(context) * 0.01,
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -110,16 +116,18 @@ class _NowPlayingState extends State<NowPlaying>
                     fontSize: screenHeight(context) * 0.015,
                   ),
                   textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               SizedBox(
                 height: screenHeight(context) * 0.02,
               ),
               Slider(
-                activeColor: redColor.withOpacity(0.9),
+                activeColor: yellowColor.withOpacity(0.9),
                 inactiveColor: textSubHeadingColor,
                 allowedInteraction: SliderInteraction.tapAndSlide,
-                thumbColor: redColor,
+                thumbColor: yellowColor,
                 value: musicProvider.audioPlayer.position.inSeconds.toDouble(),
                 onChanged: (value) {
                   musicProvider.seekSong(value);
@@ -174,7 +182,7 @@ class _NowPlayingState extends State<NowPlaying>
                       width: screenHeight(context) * 0.08,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: redColor,
+                        color: yellowColor,
                       ),
                       child: Icon(
                         musicProvider.audioPlayer.playing

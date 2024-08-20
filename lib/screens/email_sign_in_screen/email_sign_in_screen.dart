@@ -8,6 +8,7 @@ import '../../widgets/loading_widget.dart';
 
 class EmailSingInScreen extends StatefulWidget {
   const EmailSingInScreen({super.key});
+
   static String routeName = '/email_signin_screen';
 
   @override
@@ -118,8 +119,8 @@ class _EmailSingInScreenState extends State<EmailSingInScreen> {
                 },
                 style: registerButtonStyle(
                   context,
-                  redColor,
-                  redColor,
+                  yellowColor,
+                  yellowColor,
                 ),
                 child: isAuthenticating
                     ? LoadingWidget(color: blackColor)
@@ -137,7 +138,7 @@ class _EmailSingInScreenState extends State<EmailSingInScreen> {
                 style: registerButtonStyle(
                   context,
                   Colors.transparent,
-                  redColor,
+                  yellowColor,
                 ),
                 onPressed: () {
                   loadingProvider.setIsRegister(!loadingProvider.isRegister);
@@ -145,7 +146,7 @@ class _EmailSingInScreenState extends State<EmailSingInScreen> {
                 child: Text(
                   loadingProvider.isRegister ? 'Already' : 'Create',
                   style: TextStyle(
-                    color: redColor,
+                    color: yellowColor,
                     fontSize: screenWidth(context) * 0.04,
                   ),
                 ),
