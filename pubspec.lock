@@ -173,10 +173,10 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "11e40df547d418cc0c4900a9318b26304e665da6fa4755399a9ff9efd09034b5"
+      sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.3+1"
+    version: "4.0.6"
   fading_edge_scrollview:
     dependency: transitive
     description:
@@ -499,6 +499,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.0"
+  flutter_web_auth_2:
+    dependency: "direct main"
+    description:
+      name: flutter_web_auth_2
+      sha256: "4d3d2fd3d26bf1a26b3beafd4b4b899c0ffe10dc99af25abc58ffe24e991133c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
+  flutter_web_auth_2_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_web_auth_2_platform_interface
+      sha256: e8669e262005a8354389ba2971f0fc1c36188481234ff50d013aaf993f30f739
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -641,13 +657,13 @@ packages:
     source: hosted
     version: "0.12.4"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
-      sha256: "761a297c042deedc1ffbb156d6e2af13886bb305c2a343a4d972504cd67dd938"
+      sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.2"
   http_parser:
     dependency: transitive
     description:
@@ -744,6 +760,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.9.0"
   just_audio:
     dependency: "direct main"
     description:
@@ -800,6 +824,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      sha256: "7ad7215c15420a102ec687bb320a7312afd449bac63bfb1c60d9787c27b9767f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   lottie:
     dependency: "direct main"
     description:
@@ -864,6 +896,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  oauth2:
+    dependency: transitive
+    description:
+      name: oauth2
+      sha256: c4013ef62be37744efdc0861878fd9e9285f34db1f9e331cc34100d7674feb42
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   octo_image:
     dependency: transitive
     description:
@@ -1109,6 +1149,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  spotify:
+    dependency: "direct main"
+    description:
+      name: spotify
+      sha256: "705f09a457a893973451c15f4072670ac4783d67e42c35c080c55a48dee3a01f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.7"
+  spotify_sdk:
+    dependency: "direct main"
+    description:
+      name: spotify_sdk
+      sha256: e61cb0b29d58db209847c0baf27084143d2288792b2e1d19bf8a3a3e2030a64b
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   sprintf:
     dependency: transitive
     description:
@@ -1317,6 +1373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  window_to_front:
+    dependency: transitive
+    description:
+      name: window_to_front
+      sha256: "7aef379752b7190c10479e12b5fd7c0b9d92adc96817d9e96c59937929512aee"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   xdg_directories:
     dependency: transitive
     description:

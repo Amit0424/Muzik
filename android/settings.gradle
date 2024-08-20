@@ -24,3 +24,8 @@ plugins {
 }
 
 include ":app"
+include ':spotify-app-remote'
+project(':spotify-app-remote').projectDir = new File('spotify-app-remote')
+
+include ':spotify-auth'
+project(':spotify-auth').projectDir = new File('spotify-auth')

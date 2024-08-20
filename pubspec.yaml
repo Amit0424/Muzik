@@ -25,7 +25,7 @@ dependencies:
   cloud_firestore: ^4.9.3
   provider: ^6.0.5
   firebase_storage: ^11.2.8
-  dio: ^5.3.3
+  dio: ^4.0.6
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
   flutter_image_compress: ^2.1.0
@@ -45,12 +45,17 @@ dependencies:
   just_audio: ^0.9.37
   marquee: ^2.2.3
   audiotagger: ^2.2.1
+  spotify: ^0.13.7
+  http: ^1.2.2
+  spotify_sdk: ^2.3.0
+  flutter_web_auth_2: ^3.1.2
 
 dev_dependencies:
+  flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.0
+
 
 flutter:
 
@@ -61,6 +66,7 @@ flutter:
     - assets/images/jpgs/
     - assets/images/svgs/
     - assets/animations/
+    - assets/fonts/
 
   fonts:
     - family: futura
