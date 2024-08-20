@@ -72,6 +72,9 @@ flutter {
 }
 
 dependencies {
+    implementation project(':spotify-app-remote')
+    implementation "com.google.code.gson:gson:2.6.1"
+    implementation 'com.spotify.android:auth:1.2.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.multidex:multidex:2.0.1'
 }
