@@ -44,7 +44,7 @@ class _NowPlayingState extends State<NowPlaying>
         systemOverlayStyle: const SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.black,
         ),
-        backgroundColor: blackColor,
+        backgroundColor: Colors.black,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -55,7 +55,6 @@ class _NowPlayingState extends State<NowPlaying>
             size: 20,
           ),
         ),
-        centerTitle: true,
         title: Text(
           'Now Playing',
           style: appBarTitleStyle(context),
@@ -80,7 +79,7 @@ class _NowPlayingState extends State<NowPlaying>
                 height: screenHeight(context) * 0.4,
                 width: screenWidth(context),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(5),
                   image: const DecorationImage(
                     image: AssetImage('assets/images/jpgs/music_symbol.jpg'),
                     fit: BoxFit.cover,
@@ -95,7 +94,7 @@ class _NowPlayingState extends State<NowPlaying>
                 child: Text(
                   musicProvider.songName,
                   style: TextStyle(
-                    color: textHeadingColor,
+                    color: Colors.white,
                     fontSize: screenHeight(context) * 0.025,
                     fontWeight: FontWeight.w500,
                   ),
@@ -112,7 +111,7 @@ class _NowPlayingState extends State<NowPlaying>
                 child: Text(
                   musicProvider.artistName,
                   style: TextStyle(
-                    color: textSubHeadingColor,
+                    color: textHeadingColor,
                     fontSize: screenHeight(context) * 0.015,
                   ),
                   textAlign: TextAlign.center,

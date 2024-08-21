@@ -17,6 +17,7 @@ class MusicProvider extends ChangeNotifier {
   String _artistName = '';
   List<AudioSource> playlist = [];
   BrowseStart? browseStart;
+  bool hidePlayer = true;
 
   MusicProvider() {
     getDownloadedSongs();
@@ -57,11 +58,18 @@ class MusicProvider extends ChangeNotifier {
   }
 
   void playPause() {
+    hidePlayer = false;
     if (_audioPlayer.playing) {
       _audioPlayer.pause();
     } else {
       _audioPlayer.play();
     }
+    notifyListeners();
+  }
+
+  void stopSong() {
+    hidePlayer = true;
+    _audioPlayer.stop();
     notifyListeners();
   }
 
