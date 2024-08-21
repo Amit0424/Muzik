@@ -86,10 +86,10 @@ class _UserDetailFormScreenState extends State<UserDetailFormScreen> {
         Provider.of<ProfileProvider>(context);
 
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: blackColor,
+        backgroundColor: Colors.black,
         title: Text(
           'Profile',
           style: appBarTitleStyle(context),

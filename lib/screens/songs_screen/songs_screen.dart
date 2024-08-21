@@ -77,8 +77,7 @@ class _SongsScreenState extends State<SongsScreen> {
       backgroundColor: blackColor,
       body: Stack(children: [
         dashBoardList()[loadingProvider.currentIndexOfScreen],
-        if ((musicProvider.audioPlayer.playing == false &&
-            musicProvider.audioPlayer.playingStream.isBroadcast == false))
+        if (musicProvider.audioPlayer.playing || !musicProvider.hidePlayer)
           Positioned(
             bottom: 0,
             left: 0,
@@ -109,7 +108,7 @@ class _SongsScreenState extends State<SongsScreen> {
                               height: screenHeight(context) * 0.05,
                               width: screenWidth(context) * 0.1,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(5),
                                 image: const DecorationImage(
                                   image: AssetImage(
                                     'assets/images/jpgs/music_symbol.jpg',
@@ -129,7 +128,7 @@ class _SongsScreenState extends State<SongsScreen> {
                                   Text(
                                     musicProvider.songName,
                                     style: TextStyle(
-                                      color: textHeadingColor,
+                                      color: Colors.white,
                                       fontSize: screenWidth(context) * 0.04,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -137,7 +136,7 @@ class _SongsScreenState extends State<SongsScreen> {
                                   Text(
                                     musicProvider.artistName,
                                     style: TextStyle(
-                                      color: textSubHeadingColor,
+                                      color: textHeadingColor,
                                       fontSize: screenWidth(context) * 0.03,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -206,7 +205,7 @@ class _SongsScreenState extends State<SongsScreen> {
                     alignment: Alignment.topRight,
                     child: IconButton(
                       onPressed: () {
-                        musicProvider.audioPlayer.stop();
+                        musicProvider.stopSong();
                       },
                       icon: Icon(
                         Icons.close,

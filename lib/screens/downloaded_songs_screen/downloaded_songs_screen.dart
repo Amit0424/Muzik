@@ -20,8 +20,8 @@ class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: blackColor,
-        surfaceTintColor: blackColor,
+        backgroundColor: Colors.black,
+        surfaceTintColor: Colors.black,
         systemOverlayStyle: const SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.black,
         ),
@@ -29,7 +29,6 @@ class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
           'My Songs',
           style: appBarTitleStyle(context),
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -53,7 +52,11 @@ class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      if (musicProvider.audioPlayer.currentIndex != index) {
+                      if (!musicProvider.audioPlayer.playing &&
+                          musicProvider.audioPlayer.currentIndex != index) {
+                        musicProvider.setAudioSourceSong(index);
+                        musicProvider.playPause();
+                      } else {
                         musicProvider.setAudioSourceSong(index);
                         musicProvider.audioPlayer.play();
                       }
@@ -88,7 +91,7 @@ class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
                                 child: Text(
                                   songName,
                                   style: TextStyle(
-                                    color: textHeadingColor,
+                                    color: Colors.white,
                                     fontSize: screenWidth(context) * 0.04,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -99,7 +102,7 @@ class _DownloadedSongsScreenState extends State<DownloadedSongsScreen> {
                                     ? 'Unknown Artist'
                                     : artistName,
                                 style: TextStyle(
-                                  color: textSubHeadingColor,
+                                  color: textHeadingColor,
                                   fontSize: screenWidth(context) * 0.03,
                                 ),
                               ),

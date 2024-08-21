@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/styling.dart';
 import '../../providers/music_provider.dart';
-import '../../providers/spotify_provider.dart';
+import '../all_categories/all_categories.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -67,13 +67,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      await Provider.of<SpotifyProvider>(context, listen: false)
-                          .playSpotify();
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => AllCategories(
-                      //             sectionItem: mp.browseStart!.sectionItems)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllCategories(
+                                  sectionItem: mp.browseStart!.sectionItems)));
                     },
                     child: const Text(
                       'See More',
@@ -108,15 +106,15 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: 4,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          final hexColor = musicProvider.browseStart?.sectionItems[index]
-              .cardRepresentation.backgroundColorHex;
-          CardRepresentation cardRepresentation =
+          final CardRepresentation cardRepresentation =
               musicProvider.browseStart!.sectionItems[index].cardRepresentation;
+          final hexColor = cardRepresentation.backgroundColorHex;
+
           return GestureDetector(
             onTap: () {},
             child: Container(
               decoration: BoxDecoration(
-                color: Color(int.parse(hexColor!.substring(1, 7), radix: 16) +
+                color: Color(int.parse(hexColor.substring(1, 7), radix: 16) +
                         0xFF000000)
                     .withOpacity(0.5),
                 borderRadius: BorderRadius.circular(20),
