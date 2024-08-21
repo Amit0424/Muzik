@@ -13,8 +13,8 @@ class AllCategories extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: blackColor,
-        surfaceTintColor: blackColor,
+        backgroundColor: Colors.black,
+        surfaceTintColor: Colors.black,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -28,7 +28,6 @@ class AllCategories extends StatelessWidget {
           'All Categories',
           style: appBarTitleStyle(context),
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
